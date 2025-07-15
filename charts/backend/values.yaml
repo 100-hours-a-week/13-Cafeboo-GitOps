@@ -5,20 +5,36 @@ image:
   tag: prod-v1.0.0-abc123
   pullPolicy: Always
 
+imagePullSecrets:
+  - name: ecr-registry-secret
+
 service:
   type: ClusterIP
   port: 8080
 
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:576874544865:certificate/5381ee75-f039-49d8-a5a3-c5eee557d7aa
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/group.name: backend-apps
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/connection-idle-timeout: "6000"
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+  hosts:
+    - host: test.cafeboo.com
+      paths:
+        - path: /api
+          pathType: Prefix
+        - path: /ws
+          pathType: Prefix
+          
+  # HTTPS (SSL/TLS 암호화) 사용을 선언      
+  tls:
+    - hosts:
+        - test.cafeboo.com

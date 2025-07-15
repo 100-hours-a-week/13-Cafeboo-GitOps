@@ -1,0 +1,24 @@
+replicaCount: 2
+
+image:
+  repository: 576874544865.dkr.ecr.ap-northeast-2.amazonaws.com/backend
+  tag: prod-v1.0.0-abc123
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

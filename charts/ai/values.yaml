@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: your-default-repo/backend
+  repository: your-default-repo/ai
   tag: latest
   pullPolicy: IfNotPresent
 

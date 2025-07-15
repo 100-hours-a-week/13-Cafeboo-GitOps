@@ -1,12 +1,11 @@
-replicaCount: 2
+replicaCount: 1
 
 image:
-  repository: 576874544865.dkr.ecr.ap-northeast-2.amazonaws.com/backend
-  tag: prod-v1.0.0-abc123
-  pullPolicy: Always
+  repository: your-default-repo/backend
+  tag: latest
+  pullPolicy: IfNotPresent
 
-imagePullSecrets:
-  - name: ecr-registry-secret
+imagePullSecrets: []
 
 resources:
   requests:
@@ -21,28 +20,8 @@ service:
   port: 8080
 
 ingress:
-  enabled: true
-  className: alb
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:576874544865:certificate/5381ee75-f039-49d8-a5a3-c5eee557d7aa
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/group.name: backend-apps
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
-    alb.ingress.kubernetes.io/connection-idle-timeout: "3600"
-
-  hosts:
-    - host: test.cafeboo.com
-      paths:
-        - path: /api
-          pathType: Prefix
-        - path: /ws
-          pathType: Prefix
-          
-  # HTTPS (SSL/TLS 암호화) 사용을 선언      
-  tls:
-    - hosts:
-        - test.cafeboo.com
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []

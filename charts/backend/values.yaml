@@ -8,6 +8,14 @@ image:
 imagePullSecrets:
   - name: ecr-registry-secret
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
 service:
   type: ClusterIP
   port: 8080
@@ -24,7 +32,7 @@ ingress:
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/group.name: backend-apps
     alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
-    alb.ingress.kubernetes.io/connection-idle-timeout: "6000"
+    alb.ingress.kubernetes.io/connection-idle-timeout: "3600"
 
   hosts:
     - host: test.cafeboo.com
